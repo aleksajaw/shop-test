@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Product;
+use App\Models\Category;
+
 class HomeController extends Controller
 {
     /**
@@ -13,7 +16,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        /** We don't need the required authorization, so we move on. */
+        //$this->middleware('auth');
     }
 
     /**
