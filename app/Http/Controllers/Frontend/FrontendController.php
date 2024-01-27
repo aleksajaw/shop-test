@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Frontend\CartItemController;
+use App\Http\Controllers\Frontend\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

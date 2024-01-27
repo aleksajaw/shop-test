@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Frontend\CartItemController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\ProductController;
@@ -27,14 +27,14 @@ Route::get('/products/{name}', [FrontEndController::class, 'viewProduct'])->name
 
 Route::get('/category/{name}', [FrontEndController::class, 'viewCategory'])->name('frontend.category');
 
-Route::get('/cart', [CartItemController::class, 'viewCart'])->name('frontend.cart');
+Route::get('/cart', [CartController::class, 'viewCart'])->name('frontend.cart');
 
 
-Route::post('/add-cart-item', [CartItemController::class, 'addCartItem'])->name('cart-item.store');
+Route::post('/add-cart-item', [CartController::class, 'addCartItem'])->name('cart-item.store');
 
-Route::post('/update-cart-item', [CartItemController::class, 'updateCartItem'])->name('cart-item.update');
+Route::post('/update-cart-item', [CartController::class, 'updateCartItem'])->name('cart-item.update');
 
-Route::post('/remove-cart-item', [CartItemController::class, 'removeCartItem'])->name('cart-item.remove');
+Route::post('/remove-cart-item', [CartController::class, 'removeCartItem'])->name('cart-item.remove');
 
 
 Route::get('/order-checkout', [OrderController::class, 'orderCheckout'])->name('order.checkout');

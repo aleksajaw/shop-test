@@ -11,7 +11,7 @@ use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Product;
 
-class CartItemController extends Controller
+class CartController extends Controller
 {
 
     public function setCartData()
