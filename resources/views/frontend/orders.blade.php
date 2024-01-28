@@ -19,6 +19,9 @@
                                         Order id
                                     </th>
                                     <th>
+                                        Order status
+                                    </th>
+                                    <th>
                                         Client
                                     </th>
                                     <th>
@@ -41,6 +44,9 @@
                                     <tr>
                                         <td>
                                             {{ $order->id }}
+                                        </td>
+                                        <td>
+                                            {{ $order->payment->status }}
                                         </td>
                                         <td>
                                             {{ $order->client->firstname }} {{ $order->client->surname }}
