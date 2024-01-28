@@ -4,6 +4,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,8 @@ Route::get('/order-checkout', [OrderController::class, 'orderCheckout'])->name('
 Route::post('/finalize-order', [OrderController::class, 'finalizeOrder'])->name('order.store');
 
 Route::get('/orders', [FrontendController::class, 'viewOrders'])->name('frontend.orders');
+
+Route::post('/payment/status', [PaymentController::class, 'status']); 
 
 Auth::routes();
 
