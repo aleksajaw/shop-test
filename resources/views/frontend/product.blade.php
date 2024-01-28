@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         
-        <div class="col-md-2">
+        <div class="col-md-3 col-xl-2">
             <div class="card">
                 <div class="card-header">{{ __('Categories') }}</div>
 
@@ -48,7 +48,7 @@
 
                 <div class="card-body">
                     <div class="row row justify-content-evenly">    
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <img class="mw-100" src="{{ URL::to('/') }}/images/{{$product->image->name }}">
                         </div>
                         <div class="col-md-5 d-flex my-auto flex-column">

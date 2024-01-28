@@ -42,7 +42,7 @@
 
                                     <div class="form-group">
                                         <label for="phone">Phone Number:</label>
-                                        <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{3} [0-9]{3} [0-9]{3}" placeholder="123 456 789" required>
+                                        <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" placeholder="123456789" required>
                                     </div>
                                 </div>
 

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
 
 
-        <div class="col-md-2">
+        <div class="col-md-3 col-xl-2">
             <div class="card">
                 <div class="card-header">{{ __('Categories') }}</div>
 
@@ -32,7 +32,7 @@
                     <div class="row">
 
                     @foreach($products as $product)
-                        <div class="col-md-3">
+                        <div class="col-sm-6 col-lg-3 col-xl-4">
                             <div class="px-0 card h-100">
                                 <a class="text-decoration-none text-body" href="{{ route('frontend.product', ['name'=>$product->name]) }}">            
                                     <img class="card-img-top" src="{{ URL::to('/') }}/images/{{ $product->image->name }}">
