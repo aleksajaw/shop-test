@@ -2,20 +2,32 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Controller;
+use Devpark\Transfers24\Exceptions\RequestExecutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use Devpark\Transfers24\Requests\Transfers24;
+use App\Enums\PaymentStatus;
+
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Client;
 use App\Models\CartItem;
+use App\Models\Payment;
 
 class OrderController extends Controller
 {
+    private Transfers24 $transfers24;
+
+    public function __construct(Transfers24 $transfers24) {
+        $this->transfers24 = $transfers24;
+    }
+
     public function finalizeOrder(Request $request)
     {   
         $request->validate([
@@ -51,33 +63,81 @@ class OrderController extends Controller
                     'order_total_price' => $request->order_total_price
                 ]);
         
-        foreach ($request->items as $item) {
-            $order_item = OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $item['product_id'],
-                        'quantity' => $item['quantity']
+        $order_items = $request->items;
+
+        foreach ($order_items as $item) {
+            // create order items in db
+            $item = OrderItem::create([
+                       'order_id' => $order->id,
+                       'product_id' => $item['product_id'],
+                       'quantity' => $item['quantity']
                     ]);
         }
 
         $user_id = (Auth::user()) ? Auth::user()->id : 0;
         $cart_items = CartItem::where('user_id', $user_id)->get();
-        foreach( $cart_items as $cart_item ) {
-            $cart_item->delete();
-        }
 
-        session()->flush();
+        /*foreach( $cart_items as $cart_item ) {
+            // delete cart items connected with specific user in db
+            $cart_item->delete();
+        }*/
+
+        // reset session data
+        //session()->flush();
         
-        return redirect('/');
+        //return redirect('/');
+        return $this->paymentTransaction($order);
     }
+
 
     public function orderCheckout()
     {
         $request = (object) [
             'cart'=> Session::get('cart'),
-            'items'=> Session::get('items'),
+            'cart_items'=> Session::get('cart_items'),
         ];
         $cart = $request->cart;
-        $items = $request->items;
-        return view('frontend.checkout', compact('cart', 'items'));
+        $cart_items = $request->cart_items;
+        return view('frontend.checkout', compact('cart', 'cart_items'));
+    }
+
+    
+    private function paymentTransaction(Order $order)
+    {
+        $payment = new Payment();
+        $payment->order_id = $order->id;
+
+        $this->transfers24->setEmail($order->client->email)->setAmount($order->order_total_price);
+        
+        try {
+            $response = $this->transfers24->init();
+
+            if($response->isSuccess()) {
+
+                $payment->status = PaymentStatus::IN_PROGRESS;
+                $payment->session_id = $response->getSessionId();
+                $payment->save();
+
+                $cart_item_controller = new CartController();
+                $cart_item_controller->setCartData();
+
+                // save registration parameters in payment object
+                return redirect($this->transfers24->execute($response->getToken()));
+
+            } else {
+                $payment->status = PaymentStatus::FAIL;
+                $payment->error_code = $response->getErrorCode();
+                $payment->error_description = json_encode($response->getErrorDescription());
+                $payment->save();
+                
+                $cart_item_controller = new CartController();
+                $cart_item_controller->setCartData();
+                
+                return redirect(route('frontend.index'))->with('error', 'Something went wrong with payment.');
+            }
+
+        } catch (RequestException|RequestExecutionException $e) {
+            return back()->with($e->getMessage());
+        }
     }
 }

@@ -33,7 +33,7 @@ class CartController extends Controller
                                                         })->sum()
                                 ];
         session(['cart' => $structured_data]);
-        session(['items' => $structured_data->cart_items]);
+        session(['cart_items' => $structured_data->cart_items]);
         //return $structured_data; 
     }
 
@@ -41,8 +41,8 @@ class CartController extends Controller
     {
         $this->setCartData();
         $cart = Session::get('cart');
-        $items = $cart->cart_items;
-        return view('frontend.cart', compact('cart', 'items'));
+        $cart_items = $cart->cart_items;
+        return view('frontend.cart', compact('cart', 'cart_items'));
     }
     
     public function getProductInCart($product_id)

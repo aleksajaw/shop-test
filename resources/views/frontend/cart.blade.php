@@ -14,8 +14,8 @@
                     <div class="card-body">
 
                         @php($i = 1)
-                        <!--@php( session(['cart' => $cart, 'items' => $items]) )-->
-                        @foreach($items as $item)
+                        <!--@php( session(['cart' => $cart, 'cart_items' => $cart_items]) )-->
+                        @foreach($cart_items as $item)
                         <div class="row">
                             <div class="col-md-1 d-flex align-items-center justify-content-center">
                                 

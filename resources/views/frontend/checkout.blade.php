@@ -62,7 +62,7 @@
                                         </thead>
                                         <tbody>
                                             @php( $i = 0 )
-                                            @foreach($items as $item)
+                                            @foreach($cart_items as $item)
                                             <tr class="d-flex">
                                                 <td class="d-inline-flex align-items-center" style="width:-webkit-fill-available">
 
