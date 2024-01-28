@@ -119,7 +119,7 @@ class OrderController extends Controller
                 $payment->save();
 
                 $cart_item_controller = new CartController();
-                $cart_item_controller->setCartData();
+                $cart_item_controller->resetCartData();
 
                 // save registration parameters in payment object
                 return redirect($this->transfers24->execute($response->getToken()));
@@ -131,7 +131,7 @@ class OrderController extends Controller
                 $payment->save();
                 
                 $cart_item_controller = new CartController();
-                $cart_item_controller->setCartData();
+                $cart_item_controller->resetCartData();
                 
                 return redirect(route('frontend.index'))->with('error', 'Something went wrong with payment.');
             }

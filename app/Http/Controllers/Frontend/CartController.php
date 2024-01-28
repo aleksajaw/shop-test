@@ -37,6 +37,14 @@ class CartController extends Controller
         //return $structured_data; 
     }
 
+    public function resetCartData() {
+        foreach( Session::get('cart_items') as $cart_item ) {
+            // delete cart items connected with specific user in db
+            $cart_item->delete();
+        }
+        $this->setCartData();
+    }
+
     public function viewCart()
     {
         $this->setCartData();
